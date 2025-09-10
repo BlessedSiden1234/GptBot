@@ -1,4 +1,4 @@
-Stransformers==4.11.3
+transformers==4.11.3
 torch==1.9.1
 gunicorn==20.1.0
 rasa==3.6.21
