@@ -5,7 +5,7 @@ import requests
 app = Flask(__name__)
 
 # URL for Rasa's REST API (make sure Rasa is running)
-RASA_API_URL = "https://gptbot-3.onrender.com/webhooks/rest/webhook"
+RASA_API_URL = "https://gptbot-5.onrender.com/webhooks/rest/webhook"
 
 @app.route('/')
 def home():
