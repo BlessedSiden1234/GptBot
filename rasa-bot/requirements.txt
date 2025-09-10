@@ -1,0 +1,4 @@
+rasa==3.6.21
+transformers==4.11.3
+torch==1.9.1
+Werkzeug==2.2.3

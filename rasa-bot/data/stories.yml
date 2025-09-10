@@ -1,0 +1,52 @@
+version: "3.1"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+
+- story: general knowledge query
+  steps:
+    - intent: ask_anything
+    - action: action_query_gpt2
+
+- story: handle support request and escalate
+  steps:
+  - intent : support_ask
+  - action: utter_support_info
+
+- story: ask about bot
+  steps:
+  - intent: ask_about_me
+  - action: action_answer_about_me
+
+- story: greet and ask about product_query
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: product_query
+  - action: utter_product_info
+  
+- story: sad path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_goodbye
