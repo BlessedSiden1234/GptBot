@@ -119,7 +119,7 @@ class ActionQueryGPT2(Action):
             temperature=0.7,               # Controls randomness
             no_repeat_ngram_size=2,        # Prevent repetition of n-grams
             early_stopping=True,           # Stop generating when an end-of-sequence token is encountered
-            num_beams=5,                  # Use beam search for better sentence structure
+            num_beams=5,                   # Use beam search for better sentence structure
         )
 
         # Decode the generated response
