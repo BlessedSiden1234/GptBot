@@ -1,6 +1,7 @@
-Flask==2.1.2
-rasa==3.0.0
-transformers==4.11.3
+Stransformers==4.11.3
 torch==1.9.1
-requests==2.26.0
 gunicorn==20.1.0
+rasa==3.6.21
+flask==2.1.2
+requests==2.26.0
+
