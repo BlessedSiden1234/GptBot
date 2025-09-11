@@ -1,7 +1,6 @@
 # Rasa specific files and folders
 __pycache__/
 *.log
-models/
 cache/
 .rasa/
 *.db
