@@ -1,35 +1,12 @@
-# ----------------------------
-# Rasa NLU and Core Config
-# Lightweight version for low-memory deployments
-# ----------------------------
-
-# Assistant unique ID
-assistant_id: 20250831-145658-commutative-parallel
-
 language: en
 
-# ----------------------------
-# NLU Pipeline
-# ----------------------------
 pipeline:
-  - name: WhitespaceTokenizer
-  - name: CountVectorsFeaturizer
-  - name: DIETClassifier
-    epochs: 10                  # reduced from 100
-    constrain_similarities: false
-  - name: EntitySynonymMapper
-  - name: ResponseSelector
-    epochs: 10                  # reduced from 100
-  - name: FallbackClassifier
-    threshold: 0.3
-    ambiguity_threshold: 0.1
+- name: WhitespaceTokenizer
+- name: RegexFeaturizer
+- name: FallbackClassifier
+  threshold: 0.3
 
-# ----------------------------
-# Core Policies
-# ----------------------------
 policies:
-  - name: MemoizationPolicy
-  - name: RulePolicy
-  - name: UnexpecTEDIntentPolicy
-    max_history: 3
-    epochs: 10                  # reduced from 100
+- name: MemoizationPolicy
+- name: RulePolicy
+assistant_id: 20250910-193238-several-model
