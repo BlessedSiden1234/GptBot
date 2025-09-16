@@ -1,4 +1,12 @@
+language: en
+
 pipeline:
-  - name: WhitespaceTokenizer
-  - name: CountVectorsFeaturizer
-  - name: SklearnIntentClassifier
+- name: WhitespaceTokenizer
+- name: RegexFeaturizer
+- name: FallbackClassifier
+  threshold: 0.3
+
+policies:
+- name: MemoizationPolicy
+- name: RulePolicy
+assistant_id: 20250916-155627-chartreuse-pilot
