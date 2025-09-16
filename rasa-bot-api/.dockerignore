@@ -1,0 +1,23 @@
+# flyctl launch added from .gitignore
+# Rasa specific files and folders
+**\__pycache__
+**\*.log
+**\cache
+**\.rasa
+**\*.db
+**\*.bak
+
+# Flask specific files and folders
+**\venv
+**\instance
+**\.flaskenv
+
+# Python-specific files
+**\*.pyc
+**\*.pyo
+**\*.pyd
+**\*.db
+
+# Virtual Environment
+**\.env
+fly.toml
