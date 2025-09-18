@@ -3,10 +3,13 @@ language: en
 pipeline:
 - name: WhitespaceTokenizer
 - name: RegexFeaturizer
+- name: CountVectorsFeaturizer
+- name: LogisticRegressionClassifier
 - name: FallbackClassifier
   threshold: 0.3
+  ambiguity_threshold: 0.1
 
 policies:
 - name: MemoizationPolicy
 - name: RulePolicy
-assistant_id: 20250916-155627-chartreuse-pilot
+assistant_id: 20250918-155357-frigid-parallax
