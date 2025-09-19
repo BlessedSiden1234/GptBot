@@ -6,7 +6,7 @@ pipeline:
 - name: CountVectorsFeaturizer
 - name: LogisticRegressionClassifier
 - name: FallbackClassifier
-  threshold: 0.3
+  threshold: 0.25
   ambiguity_threshold: 0.1
 
 policies:

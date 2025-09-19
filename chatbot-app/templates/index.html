@@ -1,89 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with B.S Bot</title>
-    <link rel="stylesheet" href="./static/styles.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Chat with B.S Bot</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; padding: 12px; }
+    .chat-container { max-width:700px; margin:0 auto; }
+    .chat-box { border:1px solid #ccc; height:360px; overflow:auto; padding:12px; margin-bottom:8px; }
+    .user-message { text-align:right; color:#111; margin:6px 0; }
+    .bot-message { text-align:left; color:#111; margin:6px 0; }
+    .thinking { color:#888; font-style:italic; }
+  </style>
 </head>
-
 <body>
-    <div class="chat-container">
-        <h2>Chat with B.S Bot</h2>
-        <div class="chat-box" id="chat-box"></div>
-        <input type="text" id="user-input" class="input-field" placeholder="Ask a question..." />
-        <button class="btn-send" id="send-btn">Send</button>
-    </div>
+  <div class="chat-container">
+    <h2>Chat with B.S Bot</h2>
+    <div id="chat-box" class="chat-box"></div>
+    <input id="user-input" placeholder="Ask a question..." style="width:75%; padding:8px;">
+    <button id="send-btn" style="padding:8px 12px;">Send</button>
+  </div>
 
-    <script>
-        const sendBtn = document.getElementById('send-btn');
-        const userInput = document.getElementById('user-input');
-        const chatBox = document.getElementById('chat-box');
+  <script>
+    // persist a sender id in localStorage across reloads
+    let sender = localStorage.getItem('rasa_sender_id');
+    if (!sender) {
+      sender = 'user-' + Math.random().toString(36).substring(2, 12);
+      localStorage.setItem('rasa_sender_id', sender);
+    }
+    console.log("Using sender id:", sender);
 
-        // Function to add message to chat
-        function addMessage(message, sender) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add(sender + '-message');
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
 
-            // Split the message by newline (\n) and create a <p> for each part
-            const paragraphs = message.split('\n').map(para => `<p>${para.trim()}</p>`).join('');
+    function addMessage(text, cls) {
+      const el = document.createElement('div');
+      // allow multiple classes (e.g. "bot-message thinking")
+      if (cls === 'user') {
+        el.className = 'user-message';
+      } else if (cls === 'bot') {
+        el.className = 'bot-message';
+      } else {
+        el.className = cls;
+      }
+      el.innerHTML = text.split('\n').map(p => `<p>${p}</p>`).join('');
+      chatBox.appendChild(el);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      return el;
+    }
 
-            // Add the HTML content to the message element
-            messageElement.innerHTML = paragraphs;
+    // initial message
+    addMessage("What's on your mind?", 'bot');
 
-            chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+    async function sendMessage() {
+      const message = userInput.value.trim();
+      if (!message) return;
+      addMessage(message, 'user');
+      userInput.value = '';
+
+      // show thinking placeholder
+      const thinkingEl = addMessage("Thinking... (this may take a sec)", 'bot-message thinking');
+
+      try {
+        const resp = await fetch('/chat', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ message, sender })
+        });
+        const data = await resp.json();
+
+        // remove the "thinking..." message
+        if (thinkingEl && thinkingEl.parentNode) {
+          thinkingEl.remove();
         }
 
-        // Initialize the bot with the "What's on your mind?" message
-        window.onload = function() {
-            addMessage("What's on your mind?", 'bot');
-        };
+        addMessage(data.response, 'bot');
+      } catch (err) {
+        console.error(err);
+        if (thinkingEl && thinkingEl.parentNode) thinkingEl.remove();
+        addMessage("Error: could not reach the server.", 'bot');
+      }
+    }
 
-        // Handle the click event on the send button
-        sendBtn.addEventListener('click', () => {
-            const message = userInput.value.trim();
-            if (message) {
-                // Add the user's message to the chat
-                addMessage(message, 'user');
-                userInput.value = ''; // Clear the input field
-
-                // Display a "thinking" message while waiting for the bot's response
-                addMessage("Thinking... lol may not be as smart as your regular GPT, but let me try...", 'bot');
-
-                // Send the message to Flask and get the bot's response
-                fetch('/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',  // Change this to JSON
-                    },
-                    body: JSON.stringify({ message: message })  // Send message as JSON
-                })
-                    .then(response => {
-                        console.log('Response from Flask:', response);  // Log the full response object
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Bot Response:', data.response);  // Log the actual response text
-                        
-                        // Remove the "thinking" message and add the bot's response
-                        chatBox.innerHTML = chatBox.innerHTML.replace("Thinking... lol may not be as smart as your regular GPT, but let me try...", "");
-                        addMessage(data.response, 'bot');
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            }
-        });
-
-        // Optionally, send the message when the Enter key is pressed
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendBtn.click();
-            }
-        });
-    </script>
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+  </script>
 </body>
-
 </html>

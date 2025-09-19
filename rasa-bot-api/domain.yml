@@ -12,40 +12,41 @@ intents:
   - support_ask
   - ask_anything
   - ask_about_me
-  - fallback  # Ensure 'fallback' is added here
 
 actions:
-  - action_query_gpt2
+  - action_escalate_to_agent
   - action_answer_about_me
+
 
 responses:
   utter_greet:
-    - text: "Hey! How are you?"
+  - text: "Hey! How are you?"
 
   utter_support_info:
-    - text: "Wagwan"
+  - text: "Wagwan"
 
   utter_fallback:
-    - text: "I’m sorry, I didn’t quite understand that. Could you please rephrase?"
+  - text: "I’m sorry, I didn’t quite understand that. Could you please rephrase?"
+
 
   utter_product_info:
-    - text: "Our Product X is a high-quality item that is available for $99.9."
+  - text: "Our Product X is a high quality item that is available for $99.9."
 
   utter_cheer_up:
-    - text: "Here is something to cheer you up:"
-      image: "https://i.imgur.com/nGF1K8f.jpg"
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
 
   utter_did_that_help:
-    - text: "Did that help you?"
+  - text: "Did that help you?"
 
   utter_happy:
-    - text: "Great, carry on!"
+  - text: "Great, carry on!"
 
   utter_goodbye:
-    - text: "Bye"
+  - text: "Bye"
 
   utter_iamabot:
-    - text: "I am a bot, powered by Rasa."
+  - text: "I am a bot, powered by Rasa."
 
 session_config:
   session_expiration_time: 60

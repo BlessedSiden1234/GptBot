@@ -3,8 +3,8 @@ import requests
 
 app = Flask(__name__)
 
-# URL for Rasa's REST API (make sure Rasa is running)
-RASA_API_URL =  "https://gptbot-p73r.onrender.com/webhooks/rest/webhook"
+# ✅ Rasa REST API URL (make sure your Rasa server is running with --enable-api)
+RASA_API_URL = "https://gptbot-p73r.onrender.com/webhooks/rest/webhook"
 
 @app.route('/')
 def home():
@@ -12,45 +12,45 @@ def home():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    # Get the message from the request (it's now JSON)
-    user_message = request.json.get('message')
-    print(f"Received message: {user_message}")  # Debugging line to log the user's message
-    
-    # Call the function to get the bot's response
-    response = get_bot_response(user_message)
+    data = request.json or {}
+    user_message = data.get("message", "").strip()
+    sender_id = data.get("sender", "anonymous")
 
-    print(f"Sending response: {response}")  # Debugging line to log the response sent to the frontend
-    
-    return jsonify({"response": response})
+    print(f"Received message from {sender_id}: {user_message}")
 
-def get_bot_response(message):
-    # Send the user message to Rasa's REST API and get the response
-    payload = {
-        "sender": "user",
-        "message": message
-    }
-    
-    response = requests.post(RASA_API_URL, json=payload)
-    bot_response = response.json()
+    bot_text = get_bot_response(user_message, sender_id)
 
-    # Check if the response is valid and get the bot's generated response
-    if response.status_code == 200:
-        print(f"Rasa response: {bot_response}")  # Debugging line to log the Rasa response
-        
-        if bot_response and isinstance(bot_response, list):
-            # Extract the generated text from the last message in the response
-            bot_text = bot_response[-1].get('text', 'Sorry, I didn\'t understand that.') 
+    print(f"Sending response to {sender_id}: {bot_text}")
+    return jsonify({"response": bot_text})
 
-            # Prevent the bot from replying with the same message again
-            if bot_text.strip().lower() == message.strip().lower():
-                return "Sorry, I didn't understand that. Please rephrase your question."
-            
-            return bot_text 
-    else:
-        print(f"Error: {response.status_code}")  
-     
-    return 'Sorry, I didn\'t understand that.'   
- 
+def get_bot_response(message, sender_id):
+    payload = {"sender": sender_id, "message": message}
+    try:
+        r = requests.post(RASA_API_URL, json=payload, timeout=8)
+    except Exception as e:
+        print("❌ ERROR contacting Rasa API:", e)
+        return "Sorry — unable to reach the NLP server right now."
 
-if __name__ == "__main__": 
-    app.run()
+    if r.status_code != 200:
+        print("❌ Rasa returned HTTP", r.status_code, r.text)
+        return "Sorry — NLP server returned an error."
+
+    replies = r.json()
+
+    # ✅ Normal case: Rasa returned one or more messages
+    if isinstance(replies, list) and len(replies) > 0:
+        messages = []
+        for item in replies:
+            if item.get("text"):
+                messages.append(item["text"])
+            elif item.get("image"):
+                messages.append(f"[image] {item['image']}")
+            elif item.get("custom"):
+                messages.append(str(item["custom"]))
+        return "\n".join(messages)
+
+    # ✅ If no reply from Rasa
+    return "Sorry, I didn't understand that."
+
+if __name__ == "__main__":
+    app.run(debug=True)
