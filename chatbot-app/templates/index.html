@@ -1,90 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chat with B.S Bot</title>
-  <style>
-    body { font-family: Arial, Helvetica, sans-serif; padding: 12px; }
-    .chat-container { max-width:700px; margin:0 auto; }
-    .chat-box { border:1px solid #ccc; height:360px; overflow:auto; padding:12px; margin-bottom:8px; }
-    .user-message { text-align:right; color:#111; margin:6px 0; }
-    .bot-message { text-align:left; color:#111; margin:6px 0; }
-    .thinking { color:#888; font-style:italic; }
-  </style>
+  <link rel="stylesheet" href="/static/styles.css">
 </head>
+
 <body>
   <div class="chat-container">
-    <h2>Chat with B.S Bot</h2>
+    <h2>🤖 Chat with B.S Bot</h2>
     <div id="chat-box" class="chat-box"></div>
-    <input id="user-input" placeholder="Ask a question..." style="width:75%; padding:8px;">
-    <button id="send-btn" style="padding:8px 12px;">Send</button>
+    <div class="input-area">
+      <input id="user-input" placeholder="Type your question..." />
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="faq-section">
+    <h3>❓ Frequently Asked Questions</h3>
+    <ul>
+      <li>Who built you?</li>
+      <li>Tell me about Blessed Siden</li>
+      <li>What are Blessed Siden’s educational qualifications?</li>
+      <li>What technical skills does Blessed Siden possess?</li>
+      <li>What cloud technologies is Blessed Siden familiar with?</li>
+      <li>What is Blessed Siden’s expertise in machine learning and AI?</li>
+      <li>What motivates Blessed Siden in his work?</li>
+      <li>How does Blessed Siden use cloud technologies in his projects?</li>
+      <li>How does Blessed Siden ensure continuous learning in tech?</li>
+      <li>What are Blessed Siden’s future career aspirations?</li>
+      <li>Has Blessed Siden contributed to open-source projects?</li>
+      <li>What leadership roles has Blessed Siden taken in projects?</li>
+      <li>How does Blessed Siden handle teamwork and collaboration?</li>
+      <li>Does Blessed Siden have experience in agile methodologies?</li>
+      <li>How does Blessed Siden integrate safety with project innovation?</li>
+      <li>What impact does Blessed Siden want to make in engineering and tech?</li>
+
+    </ul>
   </div>
 
   <script>
-    // persist a sender id in localStorage across reloads
     let sender = localStorage.getItem('rasa_sender_id');
     if (!sender) {
       sender = 'user-' + Math.random().toString(36).substring(2, 12);
       localStorage.setItem('rasa_sender_id', sender);
     }
-    console.log("Using sender id:", sender);
 
     const chatBox = document.getElementById('chat-box');
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
 
-    function addMessage(text, cls) {
+    function addMessage(text, cls, animated = false) {
       const el = document.createElement('div');
-      // allow multiple classes (e.g. "bot-message thinking")
-      if (cls === 'user') {
-        el.className = 'user-message';
-      } else if (cls === 'bot') {
-        el.className = 'bot-message';
+      el.className = cls;
+
+      if (animated) {
+        let i = 0;
+        const interval = setInterval(() => {
+          el.innerHTML = text.substring(0, i++) + "<span class='cursor'>|</span>";
+          if (i > text.length) {
+            clearInterval(interval);
+            el.innerHTML = text; // remove cursor
+          }
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }, 40);
       } else {
-        el.className = cls;
+        el.innerHTML = text;
       }
-      el.innerHTML = text.split('\n').map(p => `<p>${p}</p>`).join('');
+
       chatBox.appendChild(el);
       chatBox.scrollTop = chatBox.scrollHeight;
       return el;
     }
 
-    // initial message
-    addMessage("What's on your mind?", 'bot');
-
-    async function sendMessage() {
-      const message = userInput.value.trim();
+    async function sendMessage(msg = null) {
+      const message = msg || userInput.value.trim();
       if (!message) return;
-      addMessage(message, 'user');
+
+      addMessage(message, "user-message");
       userInput.value = '';
 
-      // show thinking placeholder
-      const thinkingEl = addMessage("Thinking... (this may take a sec)", 'bot-message thinking');
+      const thinkingEl = addMessage("🤖 B.S Bot is thinking...", "bot-message thinking");
 
       try {
         const resp = await fetch('/chat', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message, sender })
         });
         const data = await resp.json();
 
-        // remove the "thinking..." message
-        if (thinkingEl && thinkingEl.parentNode) {
-          thinkingEl.remove();
-        }
-
-        addMessage(data.response, 'bot');
-      } catch (err) {
-        console.error(err);
         if (thinkingEl && thinkingEl.parentNode) thinkingEl.remove();
-        addMessage("Error: could not reach the server.", 'bot');
+
+        addMessage(data.response, "bot-message", true);
+      } catch (err) {
+        if (thinkingEl && thinkingEl.parentNode) thinkingEl.remove();
+        addMessage("⚠️ Error: could not reach the server.", "bot-message");
       }
     }
 
-    sendBtn.addEventListener('click', sendMessage);
+    sendBtn.addEventListener('click', () => sendMessage());
     userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+    // FAQ click functionality
+    document.querySelectorAll('.faq-section li').forEach(li => {
+      li.addEventListener('click', () => {
+        const question = li.textContent;
+        sendMessage(question);
+
+        // Scroll chat container to bottom smoothly
+        const chatContainer = document.querySelector('.chat-container');
+        chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      });
+    });
+
+    // Initial welcome message
+    window.addEventListener('load', () => {
+      addMessage("Hello! 👋 I’m B.S Bot. Ask me anything about Blessed Siden.", "bot-message", true);
+    });
   </script>
 </body>
+
 </html>

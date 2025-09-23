@@ -88,17 +88,28 @@ nlu:
     - so good
     - so perfect
 
-- intent: ask_anything
-  examples: |
-    - What is the capital of France?
-    - Tell me a joke.
-    - Who won the last football World Cup?
-    - How tall is Mount Everest?
-    - Can you help me with a math problem?
-
 - intent: ask_about_me
   examples: |
-    - Who is your master?
+    - who is your master
+    - who is your master?
+    - tell me who your master is
+    - who controls you
+    - who owns you
+    - who created you
+    - who made you
+    - who built you
+    - who programmed you
+    - who developed you
+    - who wrote this bot
+    - who is blessed siden
+    - tell me about blessed siden
+    - blessed
+    - blessed?
+    - blessed siden
+    - blessed siden?
+    - siden
+    - tell me about blessed
+    - tell me about blessed siden
     - Who programmed you?
     - What programming language did make use of to program you?
     - Who is Blessed Siden?
@@ -112,8 +123,76 @@ nlu:
     - How does Blessed Siden combine civil engineering and software development?
     - What is Blessed Siden’s expertise in machine learning and AI?
     - How does Blessed Siden ensure the safety and quality of construction projects?
+    - Has Blessed Siden contributed to open-source projects?
+    - Does Blessed Siden contribute to open-source projects?
+    - Has he shared projects on GitHub?
+    - Does he publish code for public use?
+    - What leadership roles has Blessed Siden taken in projects?
+    - Tell me about Blessed Siden’s leadership experience
+    - Did Blessed Siden play any leadership roles?
+    - What is Blessed Siden’s role at SubnetExpress?
+    - Is he the CEO of any company?
+    - What projects has Blessed Siden led?
     - What construction software tools does Blessed Siden use?
     - How does Blessed Siden approach project progress documentation?
+    - Can you tell me about Blessed Siden’s background?
+    - Where did Blessed Siden study computer science?
+    - Where did Blessed Siden study quantity surveying?
+    - What motivates Blessed Siden in his work?
+    - How does Blessed Siden apply programming in real-world projects?
+    - What kind of mobile apps has Blessed Siden developed?
+    - Does Blessed Siden have experience with full-stack development?
+    - Which machine learning frameworks does Blessed Siden use?
+    - Has Blessed Siden contributed to open-source projects?
+    - Tell me about Blessed Siden’s open-source work
+    - What kind of open-source contributions has Blessed Siden made?
+    - Is Blessed Siden active on GitHub?
+    - Has Blessed Siden contributed to open-source projects?
+    - Did Blessed Siden ever work on open source projects?
+    - What open-source contributions has Blessed Siden made?
+    - Has Blessed Siden shared any code publicly?
+    - Which GitHub projects has Blessed Siden worked on?
+    - Tell me about Blessed Siden’s open source work
+    - Has Blessed Siden published any tools for the community?
+    - Does Blessed Siden have open-source experience?
+    - Has he written open-source code?
+    - Did Blessed Siden build any repositories?
+    - What repositories has Blessed Siden uploaded?
+    - Does Blessed Siden contribute to GitHub?
+    - Has Blessed Siden supported the developer community with code?
+    - What leadership roles has Blessed Siden taken in projects?
+    - Has Blessed Siden led any projects?
+    - Did Blessed Siden manage any teams?
+    - What positions of responsibility has Blessed Siden held?
+    - Has Blessed Siden acted as a project leader?
+    - Tell me about Blessed Siden’s leadership experience
+    - What leadership skills does Blessed Siden have?
+    - Was Blessed Siden a team leader anywhere?
+    - Did Blessed Siden play any leadership roles?
+    - In what projects has Blessed Siden been a leader?
+    - Has he managed engineering teams?
+    - Did Blessed Siden supervise any projects?
+    - What leadership positions has Blessed Siden achieved?
+    - Does Blessed Siden publish code publicly?
+    - How does Blessed Siden contribute to the developer community?
+    - How does Blessed Siden use cloud technologies in his projects?
+    - What was Blessed Siden’s biggest challenge during his internship?
+    - How does Blessed Siden balance civil engineering and software work?
+    - What leadership roles has Blessed Siden taken in projects?
+    - What leadership positions has Blessed Siden held?
+    - Has Blessed Siden led any projects or teams?
+    - In what capacity has Blessed Siden acted as a leader?
+    - Has Blessed Siden managed any companies or startups?
+    - What is Blessed Siden’s role at SubnetExpress?
+    - What programming languages is Blessed Siden fluent in?
+    - How does Blessed Siden ensure continuous learning in tech?
+    - What are Blessed Siden’s future career aspirations?
+    - How does Blessed Siden handle teamwork and collaboration?
+    - Does Blessed Siden have experience in agile methodologies?
+    - How does Blessed Siden integrate safety with project innovation?
+    - What impact does Blessed Siden want to make in engineering and tech?
+
+
 
 - intent: mood_unhappy
   examples: |
@@ -138,4 +217,20 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+
+  # Lookup table to boost deterministic matching for ask_about_me
+- lookup: ask_about_me_triggers
+  examples: |
+    - who is your master
+    - who programmed you
+    - who created you
+    - who made you
+    - who built this bot
+    - who developed you
+    - who is blessed siden
+    - tell me about blessed siden
+    - who is the developer
+    - who is the author
+    - who programmed this bot
+    - who wrote this bot
 

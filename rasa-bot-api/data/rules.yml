@@ -17,6 +17,11 @@ rules:
     - intent: bot_challenge
     - action: utter_iamabot
 
+- rule: Answer about me immediately
+  steps:
+    - intent: ask_about_me
+    - action: action_answer_about_me
+
 - rule: Handle fallback when confidence is low
   steps:
     - intent: fallback

@@ -4,6 +4,7 @@ pipeline:
 - name: WhitespaceTokenizer
 - name: RegexFeaturizer
 - name: CountVectorsFeaturizer
+- name: KeywordIntentClassifier
 - name: LogisticRegressionClassifier
 - name: FallbackClassifier
   threshold: 0.25
