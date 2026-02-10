@@ -1,74 +1,97 @@
-# GPT Bot - Rasa + Flask Integration
+# 🤖 Chatbot Using Rasa (B.S Bot)
 
-This project integrates a **GPT-2 model** with **Rasa** and **Flask** to create an intelligent chatbot. The bot can answer general questions, respond to queries about **Blessed Siden**, and perform custom actions such as escalation to a human agent.
+## 📌 Project Overview
 
-## Features
+This project implements an intelligent chatbot using the **Rasa Framework**, designed to answer FAQs about **Blessed Siden** and also handle **general user questions** using a GPT-2 fallback model.
 
-- **Rasa Framework**: Manages natural language understanding (NLU) and dialog management.
-- **Flask**: Serves as the backend to handle API requests and process responses.
-- **GPT-2 Model**: Used for generating responses to general questions.
-- **Custom Actions**: Action handlers for specific use cases, including responses about Blessed Siden.
+The bot combines **rule-based responses**, **intent classification**, and **machine-learning–generated replies**, all wrapped in a simple web-based chat interface.
 
-## Prerequisites
+---
 
-- Python 3.8+
-- Rasa 3.x
-- Flask 2.x
-- PyTorch (for GPT-2)
-- transformers library
+## 🚀 Features
 
-## Installation
+- ✅ FAQ-based responses about Blessed Siden  
+- ✅ General “ask anything” capability using GPT-2  
+- ✅ Intent detection and dialogue management with Rasa  
+- ✅ Custom Rasa actions using `rasa_sdk`  
+- ✅ Flask-powered web chat UI  
+- ✅ Clickable FAQ section for quick interaction  
+- ✅ Smooth typing animation for bot responses  
 
-Follow these steps to get your development environment set up.
+---
 
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/chatbot.git
-    cd chatbot
-    ```
+## 🧠 How It Works
 
-2. Create and activate a virtual environment:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-    ```
+### 🔹 Rasa NLU
+Handles:
+- Intent classification
+- Entity extraction
+- Understanding user messages
 
-3. Install required dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+### 🔹 Rasa Core
+Manages:
+- Dialogue flow
+- Contextual conversations
+- Decision-making on which response or action to trigger
 
-4. Set up Rasa:
-    - Initialize Rasa:
-      ```bash
-      rasa init
-      ```
+### 🔹 Custom Action Server
+- Handles predefined FAQs
+- Uses **GPT-2** (Hugging Face Transformers) as a fallback for open-ended questions
 
-    - Train your Rasa model:
-      ```bash
-      rasa train
-      ```
+### 🔹 Flask Web Interface
+- Clean chat UI
+- REST API communication with Rasa
+- Persistent user sessions
+- FAQ click-to-ask functionality
 
-5. Install GPT-2 dependencies (from `transformers` library):
-    ```bash
-    pip install transformers torch
-    ```
 
-6. Run the Flask app:
-    ```bash
-    python app.py
-    ```
+## 🖥 Demo
 
-7. Start Rasa:
-    ```bash
-    rasa run --enable-api
-    ```
+Screen recording (GIF or MP4) showing:
+- Asking general questions
+- Clicking FAQ items
+- GPT-2 fallback responses
 
-## Running the Bot
+📸 Demo
+![Demo](chatbot-app/static/demo.mp4)
+---
 
-Once the Flask app and Rasa are running, you can interact with the bot through the web interface. The chatbot will respond to general queries using GPT-2 and provide specific answers about Blessed Siden.
+## ⚙️ Installation & Setup
 
-- Visit `http://localhost:5005` to interact with the bot.
+### Install Dependencies
+pip install rasa rasa-sdk flask transformers torch
 
-## Files Structure
+### Train Model
+rasa train
 
+### Run Action Server
+rasa run actions
+
+### Run Rasa API
+rasa run --enable-api --cors "*"
+
+### Start Flask App
+python app.py
+
+Open browser at:
+http://127.0.0.1:5000
+
+---
+
+## 🛠 Technologies Used
+
+- Python
+- Rasa (NLU & Core)
+- Rasa SDK
+- Flask
+- Hugging Face Transformers
+- GPT-2
+- HTML, CSS, JavaScript
+
+---
+
+## 👨‍💻 Author
+
+**Blessed Siden**
+
+⭐ If you find this project useful, feel free to star the repository!
