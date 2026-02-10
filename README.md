@@ -52,8 +52,13 @@ Screen recording (GIF or MP4) showing:
 - Clicking FAQ items
 - GPT-2 fallback responses
 
-📸 Demo
-![Demo](chatbot-app/static/demo1.mp4)
+📸 Preview  
+![Demo](chatbot-app/static/demo.gif)
+
+🎥 Full Demo  
+https://github.com/user-attachments/assets/a04009b0-b11b-4964-99e3-1dd586050181
+
+
 ---
 
 ## ⚙️ Installation & Setup
