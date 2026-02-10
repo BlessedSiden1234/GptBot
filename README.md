@@ -53,7 +53,7 @@ Screen recording (GIF or MP4) showing:
 - GPT-2 fallback responses
 
 📸 Preview  
-![Demo](chatbot-app/static/demo.gif)
+![Demo](chatbot-app/static/demo.png)
 
 🎥 Full Demo  
 https://github.com/user-attachments/assets/a04009b0-b11b-4964-99e3-1dd586050181
